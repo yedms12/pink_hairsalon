@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What color do you want?</title>
+
+  <style>
+    @font-face {
+      font-family: 'NeoDunggeunmoPro-Regular';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/NeoDunggeunmoPro-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      font-family: 'NeoDunggeunmoPro-Regular';
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: black;
+      color: white;
+      position: relative;
+    }
+
+    .background {
+      position: absolute;
+      top: 15vh;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 10vh);
+      background-image: url('./pinksalon.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      z-index: -1;
+    }
+
+    h1 {
+      font-size: 6.5rem;
+      text-align: center;
+      color: magenta;
+      margin-top: 5vh;
+    }
+    h2 {
+        font-size: 1.5rem;
+        color: black;
+        background: magenta;
+
+    }
+
+
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 70vh;
+    }
+
+    .vertical-text {
+  position: absolute; /* 위치를 절대적으로 설정 */
+  right: 12%; /* 위치 조정 */
+  top: 72%; /* 높이 조정 */
+  font-size: 1.5rem; /* 텍스트 크기 조정 */
+  color: black; /* 텍스트 색상 */
+  background: magenta;
+  white-space: nowrap; /* 줄 바꿈 방지 */
+}
+
+
+    /* 얼굴 스타일 */
+    .face {
+      width: 220px;
+      height: 250px;
+      background-color: #ffe0b2; 
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    }
+
+    /* 머리 */
+    .hair {
+      position: absolute;
+      top: -30px; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 320px;
+      background-color: #8b4513; 
+      border-radius: 50% 50% 0 0; 
+      z-index: -1;
+      overflow: hidden;
+      transition: background-color 0.3s, height 0.3s, transform 0.3s; 
+    }
+
+    .hair-top {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 150px; /* 윗머리 부분 고정 */
+      background-color: #8b4513;
+      z-index: 1;
+    }
+
+
+    /* 펌 스타일 */
+    .hair.perm {
+      background-color: #8b4513;
+      border-radius: 50% 50% 0 0;
+      /* 펌 스타일을 위한 추가적인 스타일 */
+    }
+
+    /* 컬 스타일 */
+    .hair.curl {
+      background-color: #8b4513;
+      border-radius: 50% 50% 0 0;
+    }
+
+    /* 앞머리 */
+    .bangs {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 100px;
+      background-color: #8b4513; /* 자연스러운 앞머리 색 */
+      border-radius: 50% 50% 0 0;
+      overflow: hidden;
+      transition: background-color 0.3s, height 0.3s;
+    }
+
+    /* 눈 */
+    .eye {
+      position: absolute;
+      top: 60px;
+      width: 70px;
+      height: 70px;
+      background-color: white; /* 눈 흰자 */
+      border-radius: 50%; /* 눈을 둥글게 */
+      border: 0.5px solid black; /* 눈 테두리 */
+    }
+
+    .eye.left {
+      left: 30px; /* 왼쪽 눈 위치 */
+    }
+
+    .eye.right {
+      right: 30px; /* 오른쪽 눈 위치 */
+    }
+
+    .pupil {
+      width: 30px;
+      height: 30px;
+      background-color: black; /* 눈동자 색 */
+      border-radius: 50%; /* 눈동자를 둥글게 */
+      position: absolute;
+      top: 20px; /* 위치 조정 */
+      left: 50%; /* 가운데 정렬 */
+      transform: translateX(-50%);
+    }
+
+    /* 코 */
+    .nose {
+      position: absolute;
+      top: 120px; /* 코 위치 */
+      left: 50%; /* 가운데 정렬 */
+      transform: translateX(-50%);
+      width: 20px; /* 코 넓이 */
+      height: 30px; /* 코 높이 */
+      background-color: #e59f71; /* 코 색상 */
+      border-radius: 10px; /* 둥글게 */
+    }
+
+    .mouth {
+      position: absolute;
+      top: 200px; /* 입 위치를 하단으로 조정 */
+      left: 50%; /* 가운데 정렬 */
+      transform: translateX(-50%);
+      background-color: #e87d72; /* 입 색상 */
+      border-radius: 35px; /* 아치형 입술 */
+      border: none; /* 테두리 제거 */
+    }
+
+    .mouth::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 15px;
+      border-radius: 0 0 20px 20px; /* 아치형 효과 */
+      bottom: 100%; /* 입 위로 위치 조정 */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #e87d72;
+      border: 4px solid #e87d72; /* 입술 테두리 */
+    }
+
+    .giphy-silhouette {
+      position: absolute;
+      left: 15%; 
+      top: 30%;
+      width: 120px; 
+      height: 120px;
+      background-color: magenta; 
+      border-radius: 50%; 
+      z-index: -1;
+    }
+
+    .giphy {
+      position: absolute;
+      left: 15.5%; 
+      top: 30%;
+      width: 100px; 
+      height: 100px;  
+      cursor: pointer;
+    }
+
+    .giphy-silhouette2 {
+      position: absolute;
+      right: 15%; 
+      bottom: 20%;
+      width: 120px; 
+      height: 120px;
+      background-color: magenta; 
+      border-radius: 50%; 
+      z-index: -1;
+    }
+
+    .giphy2 {
+      position: absolute;
+      right: 15%; 
+      bottom: 20%;
+      width: 140px; 
+      height: 140px; 
+      cursor: pointer;
+    }
+
+    .controls {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      /* 처음부터 노출 */
+    }
+
+
+    .color-picker {
+      margin-top: 40px;
+      width: 150px;
+      height: 50px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      font-size: 1.5rem;
+      color: magenta;
+      padding: 10px 20px;
+      background-color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background-color: magenta;
+      color: black;
+    }
+
+    .logo {
+      position: absolute;
+      left: 40px;
+      font-size: 1.5rem;
+      color: magenta;
+      border: 2px solid magenta;
+      border-radius: 10px;
+      padding: 5px 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .welcome {
+      position: absolute;
+      left: 45px;
+      font-size: 1.2rem;
+      color: magenta;
+      margin-top: 45px;
+    }
+
+    .contact {
+      position: absolute;
+      right: 40px;
+      top: 20px;
+      font-size: 1.2rem;
+      color: magenta;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div> 
+  <div class="logo">hairsalon</div> 
+  <div class="contact">Contact@<br>82+)0987-3456<br>pinksalon@gmail.com</div> <!-- 연락처 -->
+  <div class="welcome">Welcome to my salon.<br>dyeing/bleaching/toning</div> <!-- 환영 메시지 -->
+  
+  <div class="giphy-silhouette"></div> 
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmlhNmRma2RuZnFjN2FxYTAybndyOW8xOGFycWo5bzh0c2d2bGhmeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/ZeRYilsaVUWzyeMs7i/giphy.gif" alt="Giphy" class="giphy" id="giphy">
+  
+  <div class="giphy-silhouette2"></div>
+<img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExazFvZjZoOWl4eThic2MydHd4Z2pwMnVwZmVvN3JtaXV0d2dweHB6ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/2WGxF4scwfct3cH00U/giphy.gif" alt="Giphy" class="giphy2" id="giphy2">
+<div class="vertical-text">Replay!</div>
+
+
+  <h1>What color do you want?</h1>
+  <h2 style="text-align: left; color: black; padding-left: 260px; background: magenta;">Hair Cut<br>click the button!</h2>
+</div>
+  
+  <div class="container">
+    <div class="face">
+      <div class="hair"></div>
+      <div class="bangs"></div>
+      <div class="eye left">
+        <div class="pupil"></div>
+      </div>
+      <div class="eye right">
+        <div class="pupil"></div>
+      </div>
+      <div class="nose"></div>
+      <div class="mouth"></div>
+    </div>
+    
+    <div class="controls">
+  <button id="cut-hair-btn">Cut Hair</button>
+  <button id="cut-bangs-btn">Cut Bangs</button>
+</div>
+
+<input type="color" id="color-picker" class="color-picker" value="#8b4513">
+<button id="change-hair-color-btn">Change Hair Color</button>
+
+
+
+  </div>
+
+  <audio id="giphyAudio" preload="auto"></audio> 
+
+  <script>
+    let initialHairColor = '#8b4513'; // 초기 머리 색상
+let hairHeight = 320; // 초기 머리 길이
+let bangsHeight = 100; // 초기 앞머리 길이
+
+// Giphy 클릭 시 Cut Hair와 Cut Bangs 버튼 표시
+document.querySelector('.giphy').addEventListener('click', function() {
+  document.querySelector('.controls').style.display = 'flex'; // 버튼들 표시
+});
+
+// 초기 상태로 돌아가는 giphy2 클릭 시
+document.querySelector('.giphy2').addEventListener('click', function() {
+  document.querySelector('.controls').style.display = 'none'; // 버튼들 숨김
+  const hairElement = document.querySelector('.hair');
+  const bangsElement = document.querySelector('.bangs');
+
+  // 머리 길이와 앞머리를 초기 상태로 되돌림
+  hairHeight = 320; // 초기 머리 길이
+  bangsHeight = 100; // 초기 앞머리 길이
+  hairElement.style.height = `${hairHeight}px`; // 머리 길이 초기화
+  bangsElement.style.height = `${bangsHeight}px`; // 앞머리 길이 초기화
+  hairElement.style.backgroundColor = initialHairColor; // 초기 머리 색상으로 복귀
+  bangsElement.style.backgroundColor = initialHairColor; // 앞머리 색상 복귀
+});
+
+// Cut Hair 버튼 클릭 시 머리 길이를 줄이는 기능
+document.getElementById('cut-hair-btn').addEventListener('click', () => {
+  if (hairHeight > 150) { // 최소 높이 제한
+    hairHeight -= 20; // 높이 줄이기
+    document.querySelector('.hair').style.height = `${hairHeight}px`; // 스타일 업데이트
+  } else {
+    alert("더 이상 머리카락을 자를 수 없습니다!");
+  }
+});
+
+// Change Hair Color 버튼 클릭 시 머리 색상 변경
+document.getElementById('change-hair-color-btn').addEventListener('click', () => {
+  const selectedColor = document.getElementById('color-picker').value;
+  const hairElement = document.querySelector('.hair');
+  const bangsElement = document.querySelector('.bangs');
+  const giphyAudio = document.getElementById('giphyAudio');
+
+    let audioFiles = [
+      'bgm.mp3',
+      'bgm1.mp3',
+      'bgm2.mp3', 
+    ];
+    const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      giphyAudio.src = audioFiles[randomIndex]; // Set the new audio source
+      giphyAudio.play(); // Play the selected audio
+
+  // 머리와 앞머리 색상을 서서히 변경
+  hairElement.style.transition = 'background-color 0.5s ease';
+  bangsElement.style.transition = 'background-color 0.5s ease';
+  hairElement.style.backgroundColor = selectedColor;
+  bangsElement.style.backgroundColor = selectedColor;
+});
+
+
+
+
+    // Giphy 클릭 시 Cut Hair와 Cut Bangs 버튼 표시
+    document.querySelector('.giphy').addEventListener('click', function() {
+      document.querySelector('.controls').style.display = 'flex'; // 버튼들 표시
+    });
+
+    // 초기 상태로 돌아가는 giphy2 클릭 시
+    document.querySelector('.giphy2').addEventListener('click', function() {
+      document.querySelector('.controls').style.display = 'none'; // 버튼들 숨김
+      const hairElement = document.querySelector('.hair');
+      const bangsElement = document.querySelector('.bangs');
+
+      // 머리 길이와 앞머리를 초기 상태로 되돌림
+      hairHeight = 320; // 초기 머리 길이
+      bangsHeight = 100; // 초기 앞머리 길이
+      hairElement.style.height = `${hairHeight}px`; // 스타일 초기화
+      bangsElement.style.height = `${bangsHeight}px`; // 스타일 초기화
+      // 머리 색상 초기화
+        hairElement.style.backgroundColor = '#8b4513'; 
+        bangsElement.style.backgroundColor = '#8b4513'; 
+
+    });
+
+    // Cut Hair 버튼 클릭 시 머리 길이를 줄이는 기능
+    document.getElementById('cut-hair-btn').addEventListener('click', () => {
+      if (hairHeight > 150) { // 최소 높이 제한
+        hairHeight -= 20; // 높이 줄이기
+        document.querySelector('.hair').style.height = `${hairHeight}px`; // 스타일 업데이트
+      } else {
+        alert("더 이상 머리카락을 자를 수 없습니다!");
+      }
+    });
+
+    // Cut Bangs 버튼 클릭 시 앞머리 길이를 줄이는 기능
+    document.getElementById('cut-bangs-btn').addEventListener('click', () => {
+      if (bangsHeight > 50) { // 최소 높이 제한
+        bangsHeight -= 10; // 높이 줄이기
+        document.querySelector('.bangs').style.height = `${bangsHeight}px`; // 스타일 업데이트
+      } else {
+        alert("더 이상 앞머리를 자를 수 없습니다!");
+      }
+    });
+</script>
+
+</body>
+</html>
